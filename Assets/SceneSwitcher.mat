@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_Main
+  m_Name: SceneSwitcher
   m_Shader: {fileID: 4800000, guid: c8d21b7e713104e678d6eef18deeac77, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,6 +21,10 @@ Material:
     m_TexEnvs:
     - _MainTex:
         m_Texture: {fileID: 8400000, guid: e95ff4949091c4035baf3bbb7145d41d, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NextTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats: []

@@ -36,6 +36,7 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _NextTex_ST;
+            float _Level;
 
             v2f vert (appdata v)
             {
@@ -51,11 +52,13 @@
                 float2 uv = i.uv;
                 float time = _Time.y;
 
-                uv.x += sin(uv.y * 37. + time) * sin(uv.y * 717. + time * 0.3) * 0.1;
+                // uv.x += sin(uv.y * 37. + time) * sin(uv.y * 717. + time * 0.3) * 0.1;
+                // uv = frac(uv);
 
-                uv = frac(uv);
+                fixed4 color = tex2D(_MainTex, uv);
+                color.rgb *= _Level;
 
-                return tex2D(_MainTex, uv);
+                return color;
             }
             ENDCG
         }
