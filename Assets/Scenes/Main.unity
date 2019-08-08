@@ -268,7 +268,8 @@ MonoBehaviour:
   - scene1
   - scene2
   _initialScene: 0
-  _material: {fileID: 2100000, guid: 1ec82b8bdc7e54da486685c262d705a6, type: 2}
+  _shader: {fileID: 4800000, guid: c8d21b7e713104e678d6eef18deeac77, type: 3}
+  _resolution: {x: 1920, y: 1080}
 --- !u!1 &655945591
 GameObject:
   m_ObjectHideFlags: 0

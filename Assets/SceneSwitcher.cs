@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,17 +8,41 @@ public class SceneSwitcher : MonoBehaviour
 {
     [SerializeField] List<string> _scenes = new List<string>();
     [SerializeField] int _initialScene = 0;
+    [SerializeField] Shader _shader;
+    [SerializeField] Vector2 _resolution = new Vector2(1920, 1080);
     string _currentScene;
+    MeshRenderer _quad;
+    Material _material;
+    RenderTexture _mainRt;
+    RenderTexture _nextRt;
 
-    [SerializeField] Material _material;
-
-    void Start()
+    IEnumerator Start()
     {
         var sceneName = _scenes[_initialScene];
 
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         _currentScene = sceneName;
+
+        _quad = GetComponentInChildren<MeshRenderer>();
+
+        _material = new Material(_shader);
         _material.SetFloat("_Level", 1);
+        _quad.material = _material;
+
+        int w = Mathf.FloorToInt(_resolution.x);
+        int h = Mathf.FloorToInt(_resolution.y);
+        _mainRt = new RenderTexture(w, h, 24);
+        _nextRt = new RenderTexture(w, h, 24);
+
+        _material.SetTexture("_MainTex", _mainRt);
+        _material.SetTexture("_NextTex", _nextRt);
+
+        while (!SceneManager.GetSceneByName(sceneName).isLoaded) {
+            yield return new WaitForEndOfFrame();
+        }
+
+        var camera = FindObjectsOfType<Camera>().First(x => x.tag == "MainCamera");
+        camera.targetTexture = _mainRt;
     }
 
     void Update()
@@ -56,6 +81,9 @@ public class SceneSwitcher : MonoBehaviour
         while (!SceneManager.GetSceneByName(sceneName).isLoaded) {
             yield return new WaitForEndOfFrame();
         }
+
+        var camera = FindObjectsOfType<Camera>().First(x => x.tag == "MainCamera");
+        camera.targetTexture = _mainRt;
 
         // Fade in
         var nextStart = Time.time;
